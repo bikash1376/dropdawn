@@ -291,7 +291,7 @@ Feel free to reach out for questions, feedback, or collaboration opportunities!
         content: `# Bikash is currently building
 
 - **dotstudio** ([repo](https://github.com/bikash1376/dotstudio))  
-  *An open-source alternative to ScreenStudio for screen recording and streaming, built with React and ffmpeg. [Portfolio](http://bksh.site)*
+  *An open-source alternative to ScreenStudio for screen recording and streaming, built with React and ffmpeg. Contributions are welcome! [Portfolio](http://bksh.site)*
 
 **He has contributed to:**
 - **The Orbit Studio** ([theorbit.studio](https://theorbit.studio))  
@@ -299,11 +299,11 @@ Feel free to reach out for questions, feedback, or collaboration opportunities!
 
 **Other projects:**
 - **Pistash** ([app](https://pistash.vercel.app/))  
-  *A modern API client (currently not working as expected).*
+  *A modern API client (currently not working as expected O_O).*
 - **Laggyfx** ([app](https://laggyfx.netlify.app/), [repo](https://github.com/bikash1376/Laggyfx))  
   *A customizable gradient generator with live preview and image download. The app is intentionally “laggy” for fun! You can try [gradii.fun](https://gradii.fun) if you don't like my UI.*
 - **Yet Another To-Do** ([app](https://yet-another-to-do.vercel.app/))  
-  *A web-based calendar and to-do app using localStorage for persistence.*
+  *A web-based calendar and to-do app using localStorage for persistence. Nonsense*
 - **Invoicelee** ([app](https://invoicelee.netlify.app/))  
   *Generate invoices quickly and easily, right in your browser.*
 - **Take You Forward Redesign** ([app](https://takeyouforward-blush.vercel.app/))  
