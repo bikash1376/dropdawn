@@ -12,7 +12,11 @@ export async function translateText(sl: string, dl: string, text: string) {
   return res.json();
 }
 
-export function formatTranslationResponse(data: any, sl: string, dl: string) {
+export function formatTranslationResponse(
+  data: { 'source-text': string; 'destination-text': string; translations?: { 'possible-translations': string[] } },
+  sl: string,
+  dl: string
+) {
   let translationMd = `# Translation\n\n`;
   translationMd += `**${sl} → ${dl}**\n\n`;
   translationMd += `**Original:** ${data['source-text']}\n`;

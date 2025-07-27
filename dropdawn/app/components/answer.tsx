@@ -1,10 +1,10 @@
 import React from "react";
 import { marked } from 'marked';
+import Image from 'next/image';
 
 type AnswerProps = {
   answer: string;
   className?: string;
-  contentType?: 'text' | 'image' | 'mixed';
   inputType?: 'text' | 'image' | 'mixed';
   input?: string | { text?: string; image?: string };
 };
@@ -38,9 +38,11 @@ export default function Answer({ answer, className, contentType, inputType, inpu
         <div className="mb-4 p-3 bg-neutral-800 rounded-lg border border-neutral-700">
           <div className="text-xs text-neutral-400 mb-2">Input Image:</div>
           <div className="flex justify-center">
-            <img 
+            <Image 
               src={input} 
               alt="Input" 
+              width={200}
+              height={200}
               className="max-w-full max-h-48 rounded-lg object-contain"
               onError={(e) => {
                 (e.currentTarget as HTMLElement).style.display = 'none';

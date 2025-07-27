@@ -23,7 +23,7 @@ export type ProcessedPrompt = {
   qrUrl?: string;
   text?: string;
   theme?: string;
-  bookmarks?: any[];
+  bookmarks?: { id: number; text: string; timestamp: string }[];
   jokeText?: string;
 };
 

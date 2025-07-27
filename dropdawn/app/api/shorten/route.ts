@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       return NextResponse.json({ error: 'TinyURL API error' }, { status: 500 });
     }
-    const data = await res.json();
+    const data: unknown = await res.json();
     if (!data.data || !data.data.tiny_url) {
       return NextResponse.json({ error: 'TinyURL API did not return a short URL' }, { status: 500 });
     }
     return NextResponse.json({ shortUrl: data.data.tiny_url });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 } 

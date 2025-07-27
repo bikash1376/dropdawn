@@ -21,7 +21,15 @@ export async function getWeather(location: string) {
   return res.json();
 }
 
-export function formatWeatherResponse(data: any) {
+export function formatWeatherResponse(
+  data: {
+    name: string;
+    sys?: { country?: string };
+    weather?: { main?: string; description?: string; icon?: string }[];
+    main?: { temp?: number; feels_like?: number; humidity?: number };
+    wind?: { speed?: number };
+  }
+) {
   return `# Weather for ${data.name}, ${data.sys?.country || ''}\n\n` +
     `**Condition:** ${data.weather?.[0]?.main || ''} (${data.weather?.[0]?.description || ''})\n` +
     `**Temperature:** ${data.main?.temp}°C (feels like ${data.main?.feels_like}°C)\n` +
