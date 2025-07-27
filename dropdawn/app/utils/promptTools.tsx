@@ -1,5 +1,16 @@
+import { handleRephrase } from '../commands/rephrase';
+import { handleSummarise } from '../commands/summarise';
+import { handleExplain } from '../commands/explain';
+import { handleIdea } from '../commands/idea';
+import { handleBookmark, getBookmarks, clearBookmarks } from '../commands/bookmark';
+// Removed broken import from utility.ts (not a module)
+import { handleQRCode } from '../commands/qrcode';
+import { handleTheme } from '../commands/theme';
+import { handleRTC, handleEcho, handleEvaluate, handleMemes, handleAPI, handleRealtime, handleDonate } from '../commands/utility';
+import { handleHelp, handleAbout, handleAuthor, handleBuilding } from '../commands/info';
+
 export type ProcessedPrompt = {
-  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building';
+  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building' | 'bookmark' | 'qrcode' | 'theme';
   content: string;
   url?: string;
   mathExpression?: string;
@@ -8,6 +19,10 @@ export type ProcessedPrompt = {
   dl?: string;
   textToTranslate?: string;
   longUrl?: string;
+  qrUrl?: string;
+  text?: string;
+  theme?: string;
+  bookmarks?: any[];
 };
 
 const LANGUAGE_MAP: Record<string, string> = {
@@ -17,8 +32,8 @@ const LANGUAGE_MAP: Record<string, string> = {
 export function processPrompt(input: string): ProcessedPrompt {
     const rephraseCommand = ':rephrase';
     const summariseCommand = ':summarise';
-    const describeImageCommand = ':describe';
-    const analyzeImageCommand = ':analyze';
+    const explainCommand = ':explain';
+    const ideaCommand = ':idea';
     const rtcCommand = ':rtc';
     const echoCommand = ':echo';
     const evaluateCommand = ':evaluate';
@@ -28,6 +43,9 @@ export function processPrompt(input: string): ProcessedPrompt {
     const weatherCommand = ':weather';
     const translateCommand = ':translate';
     const shortenCommand = ':shorten';
+    const bookmarkCommand = ':bookmark';
+    const qrcodeCommand = ':qrcode';
+    const themeCommand = ':theme';
     const memesCommand = ':memes';
     const apiCommand = ':api';
     const realtimeCommand = ':realtime';
@@ -46,156 +64,97 @@ export function processPrompt(input: string): ProcessedPrompt {
       };
     }
     
-    // Handle :rtc command - redirect to peersuite.com
+    // Handle :rtc command
     if (trimmed.toLowerCase().startsWith(rtcCommand)) {
-      return {
-        type: 'redirect',
-        content: 'Redirecting to PeerSuite...',
-        url: 'https://peersuite.space'
-      };
+      return handleRTC();
     }
     
-    // Handle :echo command - display message as is
+    // Handle :echo command
     if (trimmed.toLowerCase().startsWith(echoCommand)) {
       const message = trimmed.slice(echoCommand.length).trim();
-      return {
-        type: 'echo',
-        content: message || 'No message provided'
-      };
+      return handleEcho(message);
     }
     
-    // Handle :evaluate command - math evaluation
+    // Handle :evaluate command
     if (trimmed.toLowerCase().startsWith(evaluateCommand)) {
       const mathExpression = trimmed.slice(evaluateCommand.length).trim();
-      return {
-        type: 'evaluate',
-        content: `Evaluating: ${mathExpression}`,
-        mathExpression: mathExpression
-      };
+      return handleEvaluate(mathExpression);
     }
     
-    // Handle :help command - display all available commands
+    // Handle :help command
     if (trimmed.toLowerCase().startsWith(helpCommand)) {
-      return {
-        type: 'help',
-        content: `# Available Commands
-
-## AI Commands
-- **:rephrase** - Rephrase text in a clearer way
-- **:summarise** - Summarize text concisely
-- **:describe** - Describe an image in detail
-- **:analyze** - Analyze image content and features
-
-## Utility Commands
-- **:rtc** - Redirect to PeerSuite.space (opens in new tab)
-- **:echo** - Display message exactly as typed
-- **:evaluate** - Evaluate mathematical expressions
-
-## Info Commands
-- **:help** - Show this help message
-- **:about** - Learn about this application
-- **:author** - Information about the creator
-
-## Usage Examples
-\`\`\`
-:rephrase This text needs to be clearer
-:summarise Long article text here
-:describe https://example.com/image.jpg
-:analyze This is a photo of a cat https://example.com/cat.jpg
-:rtc
-:echo Hello World!
-:evaluate 2 + 2 * 3
-\`\`\`
-
-Type any command followed by your input and press Enter!`
-      };
+      return handleHelp();
     }
     
-    // Handle :about command - information about the app
+    // Handle :about command
     if (trimmed.toLowerCase().startsWith(aboutCommand)) {
-      return {
-        type: 'about',
-        content: `# About Dropdawn
-
-**Dropdawn** is a modern AI chat application built with Next.js 15 and Google Gemini AI that supports both text and image inputs.
-
-## Features
-
-### 🤖 AI Capabilities
-- **Text Chat**: Ask questions, get responses from Google Gemini AI
-- **Image Analysis**: Upload images or paste image URLs for AI analysis
-- **Mixed Content**: Combine text and images in a single query
-- **Smart Commands**: Use special commands for specific tasks
-
-### 🎨 Modern UI
-- Beautiful gradient design with dark theme
-- Responsive layout for desktop and mobile
-- Smooth animations and transitions
-- Dropdown command suggestions
-
-### 🛠️ Tech Stack
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS
-- **AI**: Google Gemini AI
-- **Markdown**: Marked.js for response formatting
-
-This application provides a seamless interface for interacting with AI, analyzing images, and performing various utility tasks through an intuitive command system.`
-      };
+      return handleAbout();
     }
     
-    // Handle :author command - information about the creator
+    // Handle :author command
     if (trimmed.toLowerCase().startsWith(authorCommand)) {
-      return {
-        type: 'author',
-        content: `# About the Author
-
-## Bikash
-
-**Creator & Developer**
-
-### Contact Information
-- **Twitter**: [@bikash1376](https://x.com/bikash1376)
-- **Email**: bikash13763@gmail.com
-
-### Connect
-Feel free to reach out for questions, feedback, or collaboration opportunities!
-
----
-*Built with ❤️ using Next.js and Google Gemini AI*`
-      };
+      return handleAuthor();
+    }
+    
+    // Handle :bookmark command
+    if (trimmed.toLowerCase().startsWith(bookmarkCommand)) {
+      const text = trimmed.slice(bookmarkCommand.length).trim();
+      if (!text) {
+        // Show all bookmarks if no text provided
+        const bookmarks = getBookmarks();
+        if (bookmarks.length === 0) {
+          return {
+            type: 'bookmark',
+            content: 'No bookmarks saved yet. Use :bookmark <text> to save one.',
+            bookmarks: []
+          };
+        }
+        return {
+          type: 'bookmark',
+          content: `You have ${bookmarks.length} bookmark(s):`,
+          bookmarks: bookmarks
+        };
+      }
+      return handleBookmark(text);
+    }
+    
+    // Handle :qrcode command
+    if (trimmed.toLowerCase().startsWith(qrcodeCommand)) {
+      const text = trimmed.slice(qrcodeCommand.length).trim();
+      if (!text) {
+        return {
+          type: 'qrcode',
+          content: 'Usage: :qrcode <text>'
+        };
+      }
+      return handleQRCode(text);
+    }
+    
+    // Handle :theme command
+    if (trimmed.toLowerCase().startsWith(themeCommand)) {
+      const theme = trimmed.slice(themeCommand.length).trim();
+      return handleTheme(theme);
     }
     
     // Handle AI commands
     if (trimmed.toLowerCase().startsWith(rephraseCommand)) {
       const text = trimmed.slice(rephraseCommand.length).trim();
-      return {
-        type: 'ai',
-        content: `Please rephrase the following text in a clearer and more natural way: ${text}`
-      };
+      return handleRephrase(text);
     }
     
     if (trimmed.toLowerCase().startsWith(summariseCommand)) {
       const text = trimmed.slice(summariseCommand.length).trim();
-      return {
-        type: 'ai',
-        content: `Please summarise the following text in a concise and clear way: ${text}`
-      };
+      return handleSummarise(text);
     }
     
-    if (trimmed.toLowerCase().startsWith(describeImageCommand)) {
-      const text = trimmed.slice(describeImageCommand.length).trim();
-      return {
-        type: 'ai',
-        content: `Please describe this image in detail: ${text}`
-      };
+    if (trimmed.toLowerCase().startsWith(explainCommand)) {
+      const text = trimmed.slice(explainCommand.length).trim();
+      return handleExplain(text);
     }
     
-    if (trimmed.toLowerCase().startsWith(analyzeImageCommand)) {
-      const text = trimmed.slice(analyzeImageCommand.length).trim();
-      return {
-        type: 'ai',
-        content: `Please analyze this image and provide insights about its content, style, and any notable features: ${text}`
-      };
+    if (trimmed.toLowerCase().startsWith(ideaCommand)) {
+      const text = trimmed.slice(ideaCommand.length).trim();
+      return handleIdea(text);
     }
 
     // Support: 'english to french good morning' (no :translate needed)
@@ -257,59 +216,21 @@ Feel free to reach out for questions, feedback, or collaboration opportunities!
       };
     }
 
+    // Handle redirect commands
     if (trimmed.toLowerCase() === memesCommand) {
-      return {
-        type: 'redirect',
-        content: 'Redirecting to MemeHub... Have fun!',
-        url: 'https://www.memehub.mom/'
-      };
+      return handleMemes();
     }
     if (trimmed.toLowerCase() === apiCommand) {
-      return {
-        type: 'redirect',
-        content: 'Redirecting to Hoppscotch (API client)...',
-        url: 'https://hoppscotch.io/'
-      };
+      return handleAPI();
     }
     if (trimmed.toLowerCase() === realtimeCommand) {
-      return {
-        type: 'redirect',
-        content: 'Redirecting to Scira (Realtime infra)...',
-        url: 'https://scira.ai/'
-      };
+      return handleRealtime();
     }
     if (trimmed.toLowerCase() === donateCommand) {
-      return {
-        type: 'redirect',
-        content: 'Redirecting to coffee donation page... Thank you!',
-        url: 'https://coff.ee/bikash1376V'
-      };
+      return handleDonate();
     }
-    if (trimmed.toLowerCase() === buildingCommand) {
-      return {
-        type: 'building',
-        content: `# Bikash is currently building
-
-- **dotstudio** ([repo](https://github.com/bikash1376/dotstudio))  
-  *An open-source alternative to ScreenStudio for screen recording and streaming, built with React and ffmpeg. Contributions are welcome! [Portfolio](http://bksh.site)*
-
-**He has contributed to:**
-- **The Orbit Studio** ([theorbit.studio](https://theorbit.studio))  
-  *A DevRel & Community Activation studio for Web3 protocols for builders.*
-
-**Other projects:**
-- **Pistash** ([app](https://pistash.vercel.app/))  
-  *A modern API client (currently not working as expected O_O).*
-- **Laggyfx** ([app](https://laggyfx.netlify.app/), [repo](https://github.com/bikash1376/Laggyfx))  
-  *A customizable gradient generator with live preview and image download. The app is intentionally “laggy” for fun! You can try [gradii.fun](https://gradii.fun) if you don't like my UI.*
-- **Yet Another To-Do** ([app](https://yet-another-to-do.vercel.app/))  
-  *A web-based calendar and to-do app using localStorage for persistence. Nonsense*
-- **Invoicelee** ([app](https://invoicelee.netlify.app/))  
-  *Generate invoices quickly and easily, right in your browser.*
-- **Take You Forward Redesign** ([app](https://takeyouforward-blush.vercel.app/))  
-  *A modern redesign of the TakeUForward landing page ([original](https://takeuforward.org/)).*
-`
-      };
+    if (trimmed.toLowerCase().startsWith(buildingCommand)) {
+      return handleBuilding();
     }
     
     // Default: send to AI

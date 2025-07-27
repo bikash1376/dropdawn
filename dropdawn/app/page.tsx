@@ -13,8 +13,8 @@ const spaceMono = Space_Mono({
 const TOOL_COMMANDS = [
   ':rephrase',
   ':summarise',
-  ':describe',
-  ':analyze',
+  ':explain',
+  ':idea',
   ':rtc',
   ':echo',
   ':evaluate',
@@ -24,6 +24,9 @@ const TOOL_COMMANDS = [
   ':weather',
   ':translate',
   ':shorten',
+  ':bookmark',
+  ':qrcode',
+  ':theme',
   ':memes',
   ':api',
   ':realtime',
@@ -134,11 +137,50 @@ export default function Home() {
       case 'help':
       case 'about':
       case 'author':
+      case 'building':
         // Display help, about, or author information
         setAnswer(processedInput.content);
         setContentType('text');
         setInputType('text');
         setLoading(false);
+        return;
+        
+      case 'bookmark':
+        // Handle bookmark display
+        if (processedInput.bookmarks) {
+          let bookmarkContent = processedInput.content + '\n\n';
+          processedInput.bookmarks.forEach((bookmark: any, index: number) => {
+            const date = new Date(bookmark.timestamp).toLocaleString();
+            bookmarkContent += `**${index + 1}.** ${bookmark.text}\n*${date}*\n\n`;
+          });
+          setAnswer(bookmarkContent);
+        } else {
+          setAnswer(processedInput.content);
+        }
+        setContentType('text');
+        setInputType('text');
+        setLoading(false);
+        return;
+        
+      case 'qrcode':
+        // Display QR code
+        if (processedInput.qrUrl) {
+          setAnswer(`${processedInput.content}\n\n![QR Code](${processedInput.qrUrl})`);
+        } else {
+          setAnswer(processedInput.content);
+        }
+        setContentType('text');
+        setInputType('text');
+        setLoading(false);
+        return;
+        
+      case 'theme':
+        // Handle theme change
+        setAnswer(processedInput.content);
+        setContentType('text');
+        setInputType('text');
+        setLoading(false);
+        // You can add theme switching logic here if needed
         return;
         
       case 'ai':
@@ -163,6 +205,7 @@ export default function Home() {
           setLoading(false);
         }
         return;
+        
       case 'weather':
         if (!processedInput.location) {
           setError('Please provide a location, e.g. :weather London');
@@ -206,6 +249,7 @@ export default function Home() {
           setLoading(false);
         }
         return;
+        
       case 'translate':
         if (!processedInput.sl || !processedInput.dl || !processedInput.textToTranslate) {
           setError('Usage: english to french good morning (supported languages: english, french, etc.)');
@@ -223,7 +267,7 @@ export default function Home() {
             }),
           });
           if (!res.ok) {
-            setError('Could not fetch translation.');
+            setError('Lol noob');
             setLoading(false);
             return;
           }
@@ -245,6 +289,7 @@ export default function Home() {
           setLoading(false);
         }
         return;
+        
       case 'shorten':
         if (!processedInput.longUrl) {
           setError('Usage: :shorten <long_url>');
@@ -271,12 +316,6 @@ export default function Home() {
         } finally {
           setLoading(false);
         }
-        return;
-      case 'building':
-        setAnswer(processedInput.content);
-        setContentType('text');
-        setInputType('text');
-        setLoading(false);
         return;
     }
   };
