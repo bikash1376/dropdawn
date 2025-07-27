@@ -9,9 +9,10 @@ import { handleTheme } from '../commands/theme';
 import { handleRTC, handleEcho, handleEvaluate, handleMemes, handleAPI, handleRealtime, handleDonate } from '../commands/utility';
 import { handleHelp, handleAbout, handleAuthor, handleBuilding } from '../commands/info';
 import { handleJoke } from '../commands/joke';
+import handleHome from '../commands/home';
 
 export type ProcessedPrompt = {
-  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building' | 'bookmark' | 'qrcode' | 'theme' | 'joke';
+  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building' | 'bookmark' | 'qrcode' | 'theme' | 'joke' | 'home';
   content: string;
   url?: string;
   mathExpression?: string;
@@ -54,6 +55,7 @@ export function processPrompt(input: string): ProcessedPrompt {
     const donateCommand = ':donate';
     const buildingCommand = ':building';
     const jokeCommand = ':joke';
+    const homeCommand = ':home';
     
     const trimmed = input.trim();
     
@@ -238,6 +240,10 @@ export function processPrompt(input: string): ProcessedPrompt {
     if (trimmed.toLowerCase().startsWith(jokeCommand)) {
       const text = trimmed.slice(jokeCommand.length).trim();
       return handleJoke(text);
+    }
+
+    if (trimmed.toLowerCase().startsWith(homeCommand)) {
+      return handleHome();
     }
     
     // Default: send to AI

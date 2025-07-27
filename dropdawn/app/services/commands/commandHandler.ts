@@ -94,6 +94,13 @@ export async function handleCommand(processedInput: ProcessedPrompt): Promise<Co
         contentType: 'text',
         inputType: 'text'
       };
+
+    case 'home':
+      return {
+        answer: '',
+        contentType: 'text',
+        inputType: 'text'
+      }
       
     default:
       throw new Error('Unknown command type');
