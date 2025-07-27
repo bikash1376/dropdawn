@@ -8,9 +8,10 @@ import { handleQRCode } from '../commands/qrcode';
 import { handleTheme } from '../commands/theme';
 import { handleRTC, handleEcho, handleEvaluate, handleMemes, handleAPI, handleRealtime, handleDonate } from '../commands/utility';
 import { handleHelp, handleAbout, handleAuthor, handleBuilding } from '../commands/info';
+import { handleJoke } from '../commands/joke';
 
 export type ProcessedPrompt = {
-  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building' | 'bookmark' | 'qrcode' | 'theme';
+  type: 'ai' | 'redirect' | 'echo' | 'evaluate' | 'help' | 'about' | 'author' | 'weather' | 'translate' | 'shorten' | 'building' | 'bookmark' | 'qrcode' | 'theme' | 'joke';
   content: string;
   url?: string;
   mathExpression?: string;
@@ -23,6 +24,7 @@ export type ProcessedPrompt = {
   text?: string;
   theme?: string;
   bookmarks?: any[];
+  jokeText?: string;
 };
 
 const LANGUAGE_MAP: Record<string, string> = {
@@ -51,8 +53,26 @@ export function processPrompt(input: string): ProcessedPrompt {
     const realtimeCommand = ':realtime';
     const donateCommand = ':donate';
     const buildingCommand = ':building';
+    const jokeCommand = ':joke';
     
     const trimmed = input.trim();
+    
+    // Handle redirect commands first - these should always redirect regardless of additional text
+    if (trimmed.toLowerCase().startsWith(memesCommand)) {
+      return handleMemes();
+    }
+    if (trimmed.toLowerCase().startsWith(apiCommand)) {
+      return handleAPI();
+    }
+    if (trimmed.toLowerCase().startsWith(realtimeCommand)) {
+      return handleRealtime();
+    }
+    if (trimmed.toLowerCase().startsWith(donateCommand)) {
+      return handleDonate();
+    }
+    if (trimmed.toLowerCase().startsWith(rtcCommand)) {
+      return handleRTC();
+    }
     
     // Handle :weather command - get weather for a location
     if (trimmed.toLowerCase().startsWith(weatherCommand)) {
@@ -62,11 +82,6 @@ export function processPrompt(input: string): ProcessedPrompt {
         content: location ? `Getting weather for: ${location}` : 'Please provide a location, e.g. :weather London',
         location: location
       };
-    }
-    
-    // Handle :rtc command
-    if (trimmed.toLowerCase().startsWith(rtcCommand)) {
-      return handleRTC();
     }
     
     // Handle :echo command
@@ -100,7 +115,7 @@ export function processPrompt(input: string): ProcessedPrompt {
     if (trimmed.toLowerCase().startsWith(bookmarkCommand)) {
       const text = trimmed.slice(bookmarkCommand.length).trim();
       if (!text) {
-        // Show all bookmarks if no text provided
+        // Show all bookmarks if no text provided (same as -l flag)
         const bookmarks = getBookmarks();
         if (bookmarks.length === 0) {
           return {
@@ -216,21 +231,13 @@ export function processPrompt(input: string): ProcessedPrompt {
       };
     }
 
-    // Handle redirect commands
-    if (trimmed.toLowerCase() === memesCommand) {
-      return handleMemes();
-    }
-    if (trimmed.toLowerCase() === apiCommand) {
-      return handleAPI();
-    }
-    if (trimmed.toLowerCase() === realtimeCommand) {
-      return handleRealtime();
-    }
-    if (trimmed.toLowerCase() === donateCommand) {
-      return handleDonate();
-    }
     if (trimmed.toLowerCase().startsWith(buildingCommand)) {
       return handleBuilding();
+    }
+
+    if (trimmed.toLowerCase().startsWith(jokeCommand)) {
+      const text = trimmed.slice(jokeCommand.length).trim();
+      return handleJoke(text);
     }
     
     // Default: send to AI

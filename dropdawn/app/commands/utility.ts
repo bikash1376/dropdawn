@@ -1,7 +1,7 @@
 export function handleRTC() {
     return {
       type: 'redirect' as const,
-      content: 'Redirecting to PeerSuite...',
+      content: 'Redirecting to PeerSuite... ',
       url: 'https://peersuite.space'
     };
   }

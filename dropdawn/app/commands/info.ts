@@ -1,162 +1,3 @@
-export function handleRephrase(text: string) {
-  return {
-    type: 'ai' as const,
-    content: `Please rephrase the following text in a clearer and more natural way: ${text}`
-  };
-}
-
-export function handleSummarise(text: string) {
-  return {
-    type: 'ai' as const,
-    content: `Please summarise the following text in a concise and clear way: ${text}`
-  };
-}
-
-export function handleExplain(text: string) {
-  return {
-    type: 'ai' as const,
-    content: `Please explain the following in a simple and easy-to-understand way: ${text}`
-  };
-}
-
-export function handleIdea(text: string) {
-  return {
-    type: 'ai' as const,
-    content: `Please brainstorm and expand on this idea, providing multiple perspectives and possibilities: ${text}`
-  };
-}
-
-export function handleBookmark(text: string) {
-  // Store in localStorage
-  const bookmarks = JSON.parse(localStorage.getItem('dropdawn_bookmarks') || '[]');
-  const newBookmark = {
-    id: Date.now(),
-    text: text,
-    timestamp: new Date().toISOString()
-  };
-  bookmarks.push(newBookmark);
-  localStorage.setItem('dropdawn_bookmarks', JSON.stringify(bookmarks));
-  
-  return {
-    type: 'bookmark' as const,
-    content: `Bookmark saved! You now have ${bookmarks.length} bookmarks.`
-  };
-}
-
-export function getBookmarks() {
-  const bookmarks = JSON.parse(localStorage.getItem('dropdawn_bookmarks') || '[]');
-  return bookmarks;
-}
-
-export function clearBookmarks() {
-  localStorage.removeItem('dropdawn_bookmarks');
-  return {
-    type: 'bookmark' as const,
-    content: 'All bookmarks cleared!'
-  };
-}
-
-export function handleQRCode(text: string) {
-  // Using QR Server API (free, no API key required)
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
-  
-  return {
-    type: 'qrcode' as const,
-    content: `QR Code generated for: ${text}`,
-    qrUrl: qrUrl,
-    text: text
-  };
-}
-
-export function handleTheme(theme: string) {
-  const validThemes = ['color', 'dark', 'light'];
-  const selectedTheme = theme.toLowerCase().trim();
-  
-  if (!selectedTheme) {
-    return {
-      type: 'theme' as const,
-      content: 'Current theme: color (default)',
-      theme: 'color'
-    };
-  }
-  
-  if (!validThemes.includes(selectedTheme)) {
-    return {
-      type: 'theme' as const,
-      content: 'Invalid theme. Available themes: color, dark, light',
-      theme: 'color'
-    };
-  }
-  
-  // Store theme preference
-  localStorage.setItem('dropdawn_theme', selectedTheme);
-  
-  return {
-    type: 'theme' as const,
-    content: `Theme changed to: ${selectedTheme}`,
-    theme: selectedTheme
-  };
-}
-
-export function getCurrentTheme() {
-  return localStorage.getItem('dropdawn_theme') || 'color';
-}
-
-export function handleRTC() {
-  return {
-    type: 'redirect' as const,
-    content: 'Redirecting to PeerSuite...',
-    url: 'https://peersuite.space'
-  };
-}
-
-export function handleEcho(message: string) {
-  return {
-    type: 'echo' as const,
-    content: message || 'No message provided'
-  };
-}
-
-export function handleEvaluate(mathExpression: string) {
-  return {
-    type: 'evaluate' as const,
-    content: `Evaluating: ${mathExpression}`,
-    mathExpression: mathExpression
-  };
-}
-
-export function handleMemes() {
-  return {
-    type: 'redirect' as const,
-    content: 'Redirecting to MemeHub... Have fun!',
-    url: 'https://www.memehub.mom/'
-  };
-}
-
-export function handleAPI() {
-  return {
-    type: 'redirect' as const,
-    content: 'Redirecting to Hoppscotch (API client)...',
-    url: 'https://hoppscotch.io/'
-  };
-}
-
-export function handleRealtime() {
-  return {
-    type: 'redirect' as const,
-    content: 'Redirecting to Scira (Realtime infra)...',
-    url: 'https://scira.ai/'
-  };
-}
-
-export function handleDonate() {
-  return {
-    type: 'redirect' as const,
-    content: 'Redirecting to coffee donation page... Thank you!',
-    url: 'https://coff.ee/bikash1376V'
-  };
-}
-
 export function handleHelp() {
   return {
     type: 'help' as const,
@@ -167,12 +8,15 @@ export function handleHelp() {
 - **:summarise** - Summarize text concisely
 - **:explain** - Explain things in simple terms
 - **:idea** - Brainstorm and expand on ideas
+- **:joke** - Tell a joke about something
 
 ## Utility Commands
 - **:rtc** - Redirect to PeerSuite.space (opens in new tab)
 - **:echo** - Display message exactly as typed
 - **:evaluate** - Evaluate mathematical expressions
 - **:bookmark** - Save text to local storage
+  - \`:bookmark <text>\` - Save text as bookmark
+  - \`:bookmark\` (no text) - List all bookmarks
 - **:qrcode** - Generate QR code from text
 - **:theme** - Change theme (color/dark/light)
 
@@ -195,6 +39,7 @@ export function handleHelp() {
 :explain How does photosynthesis work?
 :idea A mobile app for pet owners
 :bookmark Important meeting notes
+:bookmark
 :qrcode https://example.com
 :theme dark
 :rtc
