@@ -36,7 +36,7 @@ export async function handleCommand(processedInput: ProcessedPrompt): Promise<Co
           contentType: 'text',
           inputType: 'text'
         };
-      } catch (error) {
+      } catch {
         throw new Error(`Invalid math expression: ${processedInput.mathExpression}`);
       }
       

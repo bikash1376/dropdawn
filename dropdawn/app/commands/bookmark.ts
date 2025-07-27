@@ -20,10 +20,10 @@ export function getBookmarks() {
   return bookmarks;
 }
 
-export function clearBookmarks() {
-  localStorage.removeItem('dropdawn_bookmarks');
-  return {
-    type: 'bookmark' as const,
-    content: 'All bookmarks cleared!'
-  };
-} 
+// export function clearBookmarks() {
+//   localStorage.removeItem('dropdawn_bookmarks');
+//   return {
+//     type: 'bookmark' as const,
+//     content: 'All bookmarks cleared!'
+//   };
+// } 

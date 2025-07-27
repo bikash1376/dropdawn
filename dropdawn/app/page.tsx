@@ -86,8 +86,6 @@ export default function Home() {
         <div className={innerDivClass}>
           <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
             
-            {/* <div className="text-white mb-2">Loading: {loading ? 'true' : 'false'}</div> */}
-            
             <ChatInput
               input={input}
               onChange={handleInputChangeWrapper}

@@ -12,6 +12,6 @@ export async function shortenUrl(longUrl: string) {
   return res.json();
 }
 
-export function formatShortenResponse(data: any, originalUrl: string) {
+export function formatShortenResponse(data: { shortUrl: string }, originalUrl: string) {
   return `**Original:** ${originalUrl}\n\n**Shortened:** [${data.shortUrl}](${data.shortUrl})`;
 } 

@@ -2,8 +2,7 @@ import { handleRephrase } from '../commands/rephrase';
 import { handleSummarise } from '../commands/summarise';
 import { handleExplain } from '../commands/explain';
 import { handleIdea } from '../commands/idea';
-import { handleBookmark, getBookmarks, clearBookmarks } from '../commands/bookmark';
-// Removed broken import from utility.ts (not a module)
+import { handleBookmark, getBookmarks } from '../commands/bookmark';
 import { handleQRCode } from '../commands/qrcode';
 import { handleTheme } from '../commands/theme';
 import { handleRTC, handleEcho, handleEvaluate, handleMemes, handleAPI, handleRealtime, handleDonate } from '../commands/utility';
