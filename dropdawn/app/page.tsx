@@ -73,7 +73,13 @@ export default function Home() {
     setInput(newInput);
   };
 
-  const innerDivClass = `m-10 rounded-lg flex justify-center pt-20 ${hasSubmitted ? ' bg-neutral-800 min-h-screen' : ''}`;
+  // Make the container wider on small screens, centered, and responsive
+  const innerDivClass = `
+    mx-auto my-6 sm:my-10 rounded-lg flex justify-center pt-10 sm:pt-20
+    bg-neutral-800 min-h-screen
+    w-[90vw] max-w-lg sm:max-w-xl md:max-w-2xl
+    px-2 sm:px-6
+  `;
 
   return (
     <>
@@ -100,17 +106,28 @@ export default function Home() {
             {error && <div className="text-red-400 mb-2">{error}</div>}
             
             {loading ? (
-              <div className="px-3 py-2 w-80 md:w-xl max-w-full text-lg rounded-lg font-sans mt-2 text-white/50 break-words flex items-center justify-center">
+              <div className="px-3 py-2 w-full max-w-2xl text-lg rounded-lg font-sans mt-2 text-white/50 break-words flex items-center justify-center">
                 Working...
               </div>
             ) : (
-              <Answer 
-                answer={answer} 
-                className="px-3 py-2 w-80 md:w-xl max-w-full text-lg rounded-lg font-sans mt-2 text-white break-words" 
-                // Remove contentType prop since it's not being used
-                inputType={inputType}
-                input={currentInput}
-              />
+              (!hasSubmitted && !answer && !error) ? (
+                <Answer
+                  answer={`hi im dropdawn, a beautiful gemini ai wrapper with some extra tools. Press the colon (:) key on your keyboard to see them.
+
+
+                    
+[Click here to raise an issue on GitHub](https://github.com/bikash1376/dropdawn/issues/new)
+`}
+                  className="px-3 py-2 w-full max-w-2xl text-lg rounded-lg font-sans mt-2 text-white break-words"
+                />
+              ) : (
+                <Answer 
+                  answer={answer} 
+                  className="px-3 py-2 w-full max-w-2xl text-lg rounded-lg font-sans mt-2 text-white break-words" 
+                  inputType={inputType}
+                  input={currentInput}
+                />
+              )
             )}
             
           </form>
@@ -119,8 +136,7 @@ export default function Home() {
         
       </div>
       
-      <style jsx global>{`
-        @keyframes gradientMove {
+      <style jsx global>{`        @keyframes gradientMove {
           0% { background-position: 0% 50%; }
           100% { background-position: 100% 50%; }
         }
@@ -131,6 +147,7 @@ export default function Home() {
 
 
 //https://images.pexels.com/photos/158063/bellingrath-gardens-alabama-landscape-scenic-158063.jpeg
+
 
 
 

@@ -33,19 +33,19 @@ export function handleHelp() {
 - **:donate** - Support the creator
 
 ## Usage Examples
-\`\`\`
-:rephrase This text needs to be clearer
-:summarise Long article text here
-:explain How does photosynthesis work?
-:idea A mobile app for pet owners
-:bookmark Important meeting notes
-:bookmark
-:qrcode https://example.com
-:theme dark
-:rtc
-:echo Hello World!
-:evaluate 2 + 2 * 3
-\`\`\`
+
+- :rephrase This text needs to be clearer
+- :summarise Long article text here
+- :explain How does photosynthesis work?
+- :idea A mobile app for pet owners
+- :bookmark Important meeting notes
+- :bookmark
+- :qrcode https://example.com
+- :theme dark
+- :rtc
+- :echo Hello World!
+- :evaluate 2 + 2 * 3
+
 
 Type any command followed by your input and press Enter!`
   };
