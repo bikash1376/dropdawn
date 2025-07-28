@@ -9,7 +9,7 @@ type AnswerProps = {
   input?: string | { text?: string; image?: string };
 };
 
-export default function Answer({ answer, className, contentType, inputType, input }: AnswerProps) {
+export default function Answer({ answer, className, inputType, input }: AnswerProps) {
   if (!answer) return null;
 
   // Configure marked to handle links properly
@@ -63,14 +63,16 @@ export default function Answer({ answer, className, contentType, inputType, inpu
           <div className="space-y-3">
             <div className="text-sm text-neutral-300">{input.text}</div>
             <div className="flex justify-center">
-              <img 
+              <Image 
                 src={input.image} 
                 alt="Input" 
+                width={200}
+                height={200}
                 className="max-w-full max-h-32 rounded-lg object-contain"
-                               onError={(e) => {
-                 (e.currentTarget as HTMLElement).style.display = 'none';
-                 ((e.currentTarget as HTMLElement).nextElementSibling as HTMLElement)!.style.display = 'block';
-               }}
+                onError={(e) => {
+                  (e.currentTarget as HTMLElement).style.display = 'none';
+                  ((e.currentTarget as HTMLElement).nextElementSibling as HTMLElement)!.style.display = 'block';
+                }}
               />
               <div className="hidden text-neutral-500 text-sm items-center justify-center">
                 Image preview unavailable

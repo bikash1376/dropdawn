@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Add type definition for TinyURL API response
+interface TinyUrlResponse {
+  data: {
+    tiny_url: string;
+  };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { url } = await request.json();
@@ -21,7 +28,7 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       return NextResponse.json({ error: 'TinyURL API error' }, { status: 500 });
     }
-    const data: unknown = await res.json();
+    const data = await res.json() as TinyUrlResponse;
     if (!data.data || !data.data.tiny_url) {
       return NextResponse.json({ error: 'TinyURL API did not return a short URL' }, { status: 500 });
     }

@@ -13,7 +13,7 @@ export default function Home() {
     loading,
     error,
     hasSubmitted,
-    contentType,
+    // Remove contentType since it's not being used
     inputType,
     currentInput,
     setLoading,
@@ -107,7 +107,7 @@ export default function Home() {
               <Answer 
                 answer={answer} 
                 className="px-3 py-2 w-80 md:w-xl max-w-full text-lg rounded-lg font-sans mt-2 text-white break-words" 
-                contentType={contentType}
+                // Remove contentType prop since it's not being used
                 inputType={inputType}
                 input={currentInput}
               />

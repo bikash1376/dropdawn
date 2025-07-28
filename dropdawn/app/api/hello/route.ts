@@ -44,7 +44,16 @@ export async function POST(request: NextRequest) {
     
     // Determine content type and prepare content for Gemini
     let contentType: 'text' | 'image' | 'mixed' = 'text';
-    const contents: any[] = [];
+    const contents: Array<{
+      role: string;
+      parts: Array<{
+        text?: string;
+        inlineData?: {
+          mimeType: string;
+          data: string;
+        };
+      }>;
+    }> = [];
     
     if (typeof input === 'string') {
       if (isBase64Image(input)) {
