@@ -1,87 +1,80 @@
-# Dropdawn - AI Chat with Image Support
+Dropdawn is a modern AI chat application built with **Next.js 15** and **Google Gemini AI**. It has smart commands that show up when you press the colon key (`:`) and uses external APIs for different tools.
 
-A modern AI chat application built with Next.js 15 and Google Gemini AI that supports both text and image inputs.
+-----
 
 ## Features
 
 ### 🤖 AI Capabilities
-- **Text Chat**: Ask questions, get responses from Google Gemini AI
-- **Image Analysis**: Upload images or paste image URLs for AI analysis
-- **Mixed Content**: Combine text and images in a single query
-- **Smart Commands**: Use special commands for specific tasks
+
+  - **Text Chat**: Get responses from Google Gemini AI.
+  - **Mixed Content**: Combine text and images in a single query.
+  - **Smart Commands**: Use special commands for specific tasks.
 
 ### 🎨 Modern UI
-- Beautiful gradient design with dark theme
-- Responsive layout for desktop and mobile
-- Smooth animations and transitions
-- Dropdown command suggestions
+
+  - A sleek gradient design with a dark theme.
+  - Responsive layout for both desktop and mobile.
+  - Smooth animations and transitions.
+  - Dropdown command suggestions for convenience.
 
 ### 📝 Available Commands
-- `:rephrase` - Rephrase text in a clearer way
-- `:summarise` - Summarize text concisely
-- `:describe` - Describe an image in detail
-- `:analyze` - Analyze image content and features
-- `:rtc` - Redirect to PeerSuite.space (opens in new tab)
-- `:echo` - Display message exactly as typed
-- `:evaluate` - Evaluate mathematical expressions
-- `:help` - Show all available commands
-- `:about` - Learn about this application
-- `:author` - Information about the creator
+
+  - `:rephrase` - Reword text for better clarity.
+  - `:summarise` - Create a concise summary of a text.
+  - `:describe` - Get a detailed description of an image.
+  - `:analyze` - Analyze the content and features of an image.
+  - `:rtc` - Redirect to PeerSuite.space (opens in a new tab).
+  - `:echo` - Display a message exactly as it's typed.
+  - `:evaluate` - Calculate the result of mathematical expressions.
+  - `:help` - See a list of all available commands.
+  - `:about` - Learn about the application.
+  - `:author` - Get information about the creator.
+
+-----
 
 ## How to Use
 
 ### Text Input
-Simply type your question and press Enter.
 
-### Image Input
-1. **Paste Image URL**: Copy an image URL and paste it directly
-2. **Base64 Images**: Paste base64 encoded images (data:image/...)
-3. **Mixed Content**: Combine text and images in your query
+Just type your question and press **Enter**.
+
+### Mixed Content
+
+Combine text and images in your query.
 
 ### Examples
-```
-# Text only
-What is the capital of France?
 
-# Image URL
-https://example.com/image.jpg
+  - **Text only**: `What is the capital of France?`
+  - **Mixed content**: `:analyze This is a photo of a cat`
+  - **Special commands**:
+      - `:rtc` (opens PeerSuite.space)
+      - `:echo Hello World!` (displays "Hello World\!")
+      - `:evaluate 2 + 2 * 3` (calculates and shows the result)
+      - `:help` (shows all available commands)
 
-# Image with text
-:describe https://example.com/image.jpg
-
-# Mixed content
-:analyze This is a photo of a cat https://example.com/cat.jpg
-
-# Special commands
-:rtc                    # Opens PeerSuite.space in new tab
-:echo Hello World!      # Displays "Hello World!"
-:evaluate 2 + 2 * 3     # Calculates and shows result
-:help                   # Shows all available commands
-:about                  # Learn about the application
-:author                 # Information about the creator
-```
+-----
 
 ## Setup
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Set your Gemini API key in environment variables:
-   ```
-   GEMINI_API_KEY=your_api_key_here
-   ```
-4. Run the development server: `npm run dev`
-5. Open [http://localhost:3000](http://localhost:3000)
+1.  **Clone** the repository.
+2.  **Install dependencies**: `npm install`
+3.  **Set your Gemini API key** in environment variables: `GEMINI_API_KEY=your_api_key_here`
+4.  **Run the development server**: `npm run dev`
+5.  **Open** your browser to `http://localhost:3000`.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS
-- **AI**: Google Gemini AI
-- **Markdown**: Marked.js for response formatting
+  - **Frontend**: Next.js 15, React 19, TypeScript
+  - **Styling**: Tailwind CSS
+  - **AI**: Google Gemini AI
+  - **Markdown**: Marked.js for response formatting
+
+-----
 
 ## API Structure
 
 The application uses Next.js App Router with the following API structure:
+
 ```
 app/
 ├── api/
@@ -95,7 +88,7 @@ app/
 
 ## Environment Variables
 
-- `GEMINI_API_KEY`: Your Google Gemini AI API key (required)
+  - `GEMINI_API_KEY`: Your Google Gemini AI API key (required).
 
 ## Development
 
